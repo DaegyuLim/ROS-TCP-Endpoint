@@ -48,7 +48,13 @@ class RosPublisher(RosSender):
         Returns:
             None: Explicitly return None so behaviour can be
         """
-        self.msg.deserialize(data)
+        
+        try:
+            self.msg.deserialize(data)
+            self.msg.header.frame_id = "world"
+        except:
+            self.msg.deserialize(data)
+
         self.pub.publish(self.msg)
 
         return None
