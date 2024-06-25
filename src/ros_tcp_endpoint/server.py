@@ -34,6 +34,7 @@ class TcpServer:
     """
 
     def __init__(self, node_name, buffer_size=1024, connections=10, tcp_ip=None, tcp_port=None):
+        print("quest tcp server init")
         """
         Initializes ROS node and class variables.
 
@@ -68,10 +69,12 @@ class TcpServer:
         self.pending_srv_is_request = False
 
     def start(self, publishers=None, subscribers=None):
+        print("test start1")
         if publishers is not None:
             self.publishers_table = publishers
         if subscribers is not None:
             self.subscribers_table = subscribers
+        print("test start2")
         server_thread = threading.Thread(target=self.listen_loop)
         # Exit the server thread when the main thread terminates
         server_thread.daemon = True
@@ -82,11 +85,12 @@ class TcpServer:
             Creates and binds sockets using TCP variables then listens for incoming connections.
             For each new connection a client thread will be created to handle communication.
         """
+        print("test listen loop1")
         self.loginfo("Starting server on {}:{}".format(self.tcp_ip, self.tcp_port))
         tcp_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tcp_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         tcp_server.bind((self.tcp_ip, self.tcp_port))
-
+        print("test listen loop2")
         while True:
             tcp_server.listen(self.connections)
 

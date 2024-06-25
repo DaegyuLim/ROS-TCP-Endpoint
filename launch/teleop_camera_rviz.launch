@@ -1,6 +1,7 @@
 <launch>
     <!-- ros tcp endpoint -->
-    <arg name="quest" default="True"/>
+    <arg name="quest" default="False"/>
+    <arg name="gello" default="False"/>
     <arg name="tcp_ip" default="192.168.0.170"/>
     <arg name="tcp_port" default="10000"/>
 
@@ -10,18 +11,32 @@
             <param name="tcp_port" type="int" value="$(arg tcp_port)"/>
         </node>
     </group>
+
+    <group if="$(eval arg('gello') == True)">
+        <node name="unity_endpoint" pkg="ros_tcp_endpoint" type="default_server_endpoint.py" output="screen">
+            <param name="tcp_ip" type="string" value="$(arg tcp_ip)"/>
+            <param name="tcp_port" type="int" value="$(arg tcp_port)"/>
+        </node>
+    </group>
+
     <!-- realsense camera nodes and rviz -->
     <arg name="lhand_camera" default="True"/>
+    <arg name="rhand_camera" default="True"/>
     <arg name="head_camera" default="False"/>
     <!-- <arg name="gripper" default="true"/> -->
     <arg name="robot_id" default="dsr_l"/>
     <arg name="rviz" default="True"/>
+    <arg name="rqt" default="True"/>
+
     <rosparam param="/dsr/robot_id" subst_value="True">$(arg robot_id)</rosparam>
 
     <!-- <group ns="$(arg robot_id)">
         <node name="record_episode_py" pkg="dsr_example_py" type="record_episode.py" output="screen"/>
     </group> -->
     
+    <!-- <group if="$(eval arg('rqt') == True)"></group>
+        <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+    </group> -->
     <!-- Show in Rviz -->
     <group if="$(eval arg('rviz') == True)">
         <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ros_tcp_endpoint)/rviz/dsr_teleop_data_visualize.rviz"/>
@@ -190,27 +205,27 @@
     </group> -->
     
      <group if="$(arg lhand_camera)">
-          <node name="lhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
-            <param name="video_device" value="/dev/video0" />
+          <node name="lhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
+            <param name="video_device" value="/dev/video2" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
             <param name="image_height" value="360" />
             <param name="pixel_format" value="mjpeg" />
             <param name="camera_name" value="lhand_camera" />
-            <param name="camera_frame_id" value="usb_cam" />
+            <param name="camera_frame_id" value="usb_cam_left" />
             <param name="io_method" value="mmap"/>
         </node>
     </group>
 
-    <group if="$(arg head_camera)">
-          <node name="head_camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <group if="$(arg rhand_camera)">
+          <node name="rhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
             <param name="video_device" value="/dev/video0" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
             <param name="image_height" value="360" />
             <param name="pixel_format" value="mjpeg" />
-            <param name="camera_name" value="head_camera" />
-            <param name="camera_frame_id" value="usb_cam" />
+            <param name="camera_name" value="rhand_camera" />
+            <param name="camera_frame_id" value="usb_cam_right" />
             <param name="io_method" value="mmap"/>
         </node>
     </group>
