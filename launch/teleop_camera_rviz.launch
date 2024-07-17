@@ -22,7 +22,7 @@
     <!-- realsense camera nodes and rviz -->
     <arg name="lhand_camera" default="True"/>
     <arg name="rhand_camera" default="True"/>
-    <arg name="head_camera" default="False"/>
+    <arg name="head_camera" default="True"/>
     <!-- <arg name="gripper" default="true"/> -->
     <arg name="robot_id" default="dsr_l"/>
     <arg name="rviz" default="True"/>
@@ -206,10 +206,10 @@
     
      <group if="$(arg lhand_camera)">
           <node name="lhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
-            <param name="video_device" value="/dev/video2" />
+            <param name="video_device" value="/dev/video0" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
-            <param name="image_height" value="360" />
+            <param name="image_height" value="480" />
             <param name="pixel_format" value="mjpeg" />
             <param name="camera_name" value="lhand_camera" />
             <param name="camera_frame_id" value="usb_cam_left" />
@@ -219,10 +219,10 @@
 
     <group if="$(arg rhand_camera)">
           <node name="rhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
-            <param name="video_device" value="/dev/video0" />
+            <param name="video_device" value="/dev/video2" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
-            <param name="image_height" value="360" />
+            <param name="image_height" value="480" />
             <param name="pixel_format" value="mjpeg" />
             <param name="camera_name" value="rhand_camera" />
             <param name="camera_frame_id" value="usb_cam_right" />
@@ -230,6 +230,18 @@
         </node>
     </group>
 
+    <group if="$(arg head_camera)">
+        <node name="head_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
+          <param name="video_device" value="/dev/video4" />
+          <param name="framerate" value="30" />
+          <param name="image_width" value="1280" />
+          <param name="image_height" value="480" />
+          <param name="pixel_format" value="mjpeg" />
+          <param name="camera_name" value="head_camera" />
+          <param name="camera_frame_id" value="usb_cam_right" />
+          <param name="io_method" value="mmap"/>
+      </node>
+  </group>
     <!-- <group if="$(arg head_camera)">
         <arg name="external_manager"    default="false"/>
         <arg name="manager"             default="realsense2_camera_manager"/>
