@@ -206,7 +206,7 @@
     
      <group if="$(arg lhand_camera)">
           <node name="lhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
-            <param name="video_device" value="/dev/video0" />
+            <param name="video_device" value="/dev/v4l/by-path/pci-0000:11:00.0-usb-0:5:1.0-video-index0" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
             <param name="image_height" value="480" />
@@ -219,7 +219,7 @@
 
     <group if="$(arg rhand_camera)">
           <node name="rhand_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
-            <param name="video_device" value="/dev/video2" />
+            <param name="video_device" value="/dev/v4l/by-path/pci-0000:13:00.4-usb-0:2:1.0-video-index0" />
             <param name="framerate" value="30" />
             <param name="image_width" value="1280" />
             <param name="image_height" value="480" />
@@ -232,13 +232,13 @@
 
     <group if="$(arg head_camera)">
         <node name="head_camera" pkg="usb_cam" type="usb_cam_node" output="screen">
-          <param name="video_device" value="/dev/video4" />
+          <param name="video_device" value="/dev/v4l/by-path/pci-0000:11:00.0-usb-0:3:1.0-video-index0" />
           <param name="framerate" value="30" />
           <param name="image_width" value="1280" />
           <param name="image_height" value="480" />
           <param name="pixel_format" value="mjpeg" />
           <param name="camera_name" value="head_camera" />
-          <param name="camera_frame_id" value="usb_cam_right" />
+          <param name="camera_frame_id" value="usb_cam_head" />
           <param name="io_method" value="mmap"/>
       </node>
   </group>
